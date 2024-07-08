@@ -1,7 +1,7 @@
 package com.ieumsae.chattest2.groupChat.controller;
 
 import com.ieumsae.chattest2.groupChat.domain.GroupChat;
-import com.ieumsae.chattest2.groupChat.domain.UserInfo;
+import com.ieumsae.chattest2.groupChat.domain.GroupUserInfo;
 import com.ieumsae.chattest2.groupChat.service.GroupChatService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.MessageMapping;
@@ -54,10 +54,10 @@ public class GroupChatController {
      */
     @GetMapping("/chat/{studyIdx}")
     public String chatRoom(@PathVariable Integer studyIdx, Model model, Principal principal) {
-        UserInfo userInfo = chatService.getUserInfo(principal.getName());
+        GroupUserInfo groupUserInfo = chatService.getUserInfo(principal.getName());
         model.addAttribute("studyIdx", studyIdx);
-        model.addAttribute("currentUserIdx", userInfo.getUserIdx());
-        model.addAttribute("currentUserNickname", userInfo.getUserNickName());
+        model.addAttribute("currentUserIdx", groupUserInfo.getUserIdx());
+        model.addAttribute("currentUserNickname", groupUserInfo.getUserNickName());
         return "chat";
     }
 }

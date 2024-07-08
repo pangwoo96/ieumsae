@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.Date;
 
 @Entity
 @Table(name = "GROUP_CHAT")
@@ -29,4 +30,7 @@ public class GroupChat {
 
     @Column(name = "chat_content") // 채팅 내용
     private String chatContent;
+
+    @Column(name = "chat_send_dt")
+    private Date chatSendDt;
 }

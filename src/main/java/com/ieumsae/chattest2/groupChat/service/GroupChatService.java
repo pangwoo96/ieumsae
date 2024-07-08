@@ -1,10 +1,10 @@
 package com.ieumsae.chattest2.groupChat.service;
 
 import com.ieumsae.chattest2.groupChat.domain.GroupChat;
-import com.ieumsae.chattest2.groupChat.domain.UserInfo;
+import com.ieumsae.chattest2.groupChat.domain.GroupUserInfo;
 import com.ieumsae.chattest2.groupChat.repository.GroupChatRepository;
 import com.ieumsae.chattest2.groupChat.repository.StudyGroupRequestRepository;
-import com.ieumsae.chattest2.groupChat.repository.UserInfoRepository;
+import com.ieumsae.chattest2.groupChat.repository.GroupUserInfoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
@@ -17,7 +17,7 @@ public class GroupChatService {
 
     private final StudyGroupRequestRepository studyGroupRequestRepository;
     private final GroupChatRepository groupChatRepository;
-    private final UserInfoRepository userInfoRepository;
+    private final GroupUserInfoRepository groupUserInfoRepository;
     private final SimpMessagingTemplate messagingTemplate;
 
     /**
@@ -25,17 +25,17 @@ public class GroupChatService {
      *
      * @param studyGroupRequestRepository 스터디 그룹 요청 레포지토리
      * @param groupChatRepository         그룹 채팅 레포지토리
-     * @param userInfoRepository          사용자 정보 레포지토리
+     * @param groupUserInfoRepository          사용자 정보 레포지토리
      * @param messagingTemplate           메시징 템플릿
      */
     @Autowired
     public GroupChatService(StudyGroupRequestRepository studyGroupRequestRepository,
                             GroupChatRepository groupChatRepository,
-                            UserInfoRepository userInfoRepository,
+                            GroupUserInfoRepository groupUserInfoRepository,
                             SimpMessagingTemplate messagingTemplate) {
         this.studyGroupRequestRepository = studyGroupRequestRepository;
         this.groupChatRepository = groupChatRepository;
-        this.userInfoRepository = userInfoRepository;
+        this.groupUserInfoRepository = groupUserInfoRepository;
         this.messagingTemplate = messagingTemplate;
     }
 
@@ -57,10 +57,10 @@ public class GroupChatService {
      */
     public void processRoomEntry(GroupChat message) {
         if (canEnterChatRoom(message.getUserIdx(), message.getStudyIdx())) {
-            UserInfo userInfo = userInfoRepository.findByUserIdx(message.getUserIdx())
+            GroupUserInfo groupUserInfo = groupUserInfoRepository.findByUserIdx(message.getUserIdx())
                     .orElseThrow(() -> new RuntimeException("User not found"));
 
-            message.setChatContent(userInfo.getUserNickName() + " 님이 입장하셨습니다.");
+            message.setChatContent(groupUserInfo.getUserNickName() + " 님이 입장하셨습니다.");
             message.setChatIdx(generateChatIdx(message.getUserIdx(), message.getStudyIdx()));
 
             groupChatRepository.save(message);
@@ -80,7 +80,7 @@ public class GroupChatService {
      * @param message 그룹 채팅 메시지
      */
     public void sendMessage(GroupChat message) {
-        UserInfo userInfo = userInfoRepository.findByUserIdx(message.getUserIdx())
+        GroupUserInfo groupUserInfo = groupUserInfoRepository.findByUserIdx(message.getUserIdx())
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
         message.setChatIdx(generateChatIdx(message.getUserIdx(), message.getStudyIdx()));
@@ -106,8 +106,8 @@ public class GroupChatService {
      * @param username 사용자 이름
      * @return 사용자 정보
      */
-    public UserInfo getUserInfo(String username) {
-        return userInfoRepository.findByUsername(username)
+    public GroupUserInfo getUserInfo(String username) {
+        return groupUserInfoRepository.findByUserName(username)
                 .orElseThrow(() -> new RuntimeException("User not found"));
     }
 }

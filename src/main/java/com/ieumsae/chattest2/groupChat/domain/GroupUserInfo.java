@@ -12,7 +12,7 @@ import javax.persistence.*;
 @Getter @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserInfo {
+public class GroupUserInfo {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -24,5 +24,8 @@ public class UserInfo {
 
     @Column(name = "user_nick_name") // 닉네임
     private String userNickName;
+
+    @Column(name = "user_name")
+    private String userName;
 
 }
