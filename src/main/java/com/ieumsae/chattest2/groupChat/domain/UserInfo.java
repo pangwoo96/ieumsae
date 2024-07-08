@@ -24,7 +24,5 @@ public class UserInfo {
 
     @Column(name = "user_nick_name") // 닉네임
     private String userNickName;
-    
-    //깃허브 확인용
 
 }
