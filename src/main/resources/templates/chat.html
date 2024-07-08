@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>스터디 채팅방</title>
+    <link rel="stylesheet" th:href="@{/css/chat.css}">
+</head>
+<body>
+<div class="chat-container">
+    <header class="chat-header">
+        <h1 th:text="${'스터디 ' + studyIdx + ' 채팅방'}"></h1>
+    </header>
+    <div id="chat-messages" class="chat-messages"></div>
+    <div class="chat-input">
+        <input type="text" id="message-input" placeholder="메시지를 입력하세요...">
+        <button id="send-button">전송</button>
+    </div>
+</div>
+
+<script th:inline="javascript">
+    var currentUserIdx = [[${currentUserIdx}]];
+    var currentStudyIdx = [[${studyIdx}]];
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.5.1/sockjs.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
+<script th:src="@{/js/groupChat.js}"></script>
+</body>
+</html>
